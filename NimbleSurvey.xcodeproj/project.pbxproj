@@ -18,6 +18,8 @@
 		64A027EE2C5A240F009FBD76 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A027ED2C5A240F009FBD76 /* SignInView.swift */; };
 		64A027F12C5A7849009FBD76 /* ResetPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A027F02C5A7849009FBD76 /* ResetPasswordView.swift */; };
 		64A027F32C5A80F6009FBD76 /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A027F22C5A80F6009FBD76 /* ViewExtension.swift */; };
+		64A027F62C5B74C3009FBD76 /* SkeletonLoadingHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A027F52C5B74C3009FBD76 /* SkeletonLoadingHomeView.swift */; };
+		64A027F92C5B80A9009FBD76 /* ShimmerAnimatedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A027F82C5B80A9009FBD76 /* ShimmerAnimatedView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +55,8 @@
 		64A027ED2C5A240F009FBD76 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		64A027F02C5A7849009FBD76 /* ResetPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordView.swift; sourceTree = "<group>"; };
 		64A027F22C5A80F6009FBD76 /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
+		64A027F52C5B74C3009FBD76 /* SkeletonLoadingHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonLoadingHomeView.swift; sourceTree = "<group>"; };
+		64A027F82C5B80A9009FBD76 /* ShimmerAnimatedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerAnimatedView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +154,7 @@
 		64A027E62C5A1F08009FBD76 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				64A027F72C5B8092009FBD76 /* Views */,
 				64A027E22C5A1849009FBD76 /* Fonts */,
 				64A027EB2C5A23DB009FBD76 /* Extensions */,
 				64A027E72C5A1F1C009FBD76 /* Utils.swift */,
@@ -167,6 +172,7 @@
 		64A027EA2C5A23C6009FBD76 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				64A027F42C5B74A6009FBD76 /* SkeletonLoadingView */,
 				64A027EF2C5A7833009FBD76 /* Reset Password */,
 				64A027EC2C5A2400009FBD76 /* Sign In */,
 			);
@@ -195,6 +201,22 @@
 			children = (
 			);
 			path = "Reset Password";
+			sourceTree = "<group>";
+		};
+		64A027F42C5B74A6009FBD76 /* SkeletonLoadingView */ = {
+			isa = PBXGroup;
+			children = (
+				64A027F52C5B74C3009FBD76 /* SkeletonLoadingHomeView.swift */,
+			);
+			path = SkeletonLoadingView;
+			sourceTree = "<group>";
+		};
+		64A027F72C5B8092009FBD76 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				64A027F82C5B80A9009FBD76 /* ShimmerAnimatedView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -329,8 +351,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				64A027B72C59E96B009FBD76 /* NimbleSurveyApp.swift in Sources */,
+				64A027F62C5B74C3009FBD76 /* SkeletonLoadingHomeView.swift in Sources */,
 				64A027E82C5A1F1C009FBD76 /* Utils.swift in Sources */,
 				64A027EE2C5A240F009FBD76 /* SignInView.swift in Sources */,
+				64A027F92C5B80A9009FBD76 /* ShimmerAnimatedView.swift in Sources */,
 				64A027F12C5A7849009FBD76 /* ResetPasswordView.swift in Sources */,
 				64A027F32C5A80F6009FBD76 /* ViewExtension.swift in Sources */,
 			);
