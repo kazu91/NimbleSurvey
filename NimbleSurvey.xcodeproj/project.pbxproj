@@ -8,13 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		64A027B72C59E96B009FBD76 /* NimbleSurveyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A027B62C59E96B009FBD76 /* NimbleSurveyApp.swift */; };
-		64A027B92C59E96B009FBD76 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A027B82C59E96B009FBD76 /* ContentView.swift */; };
-		64A027BB2C59E96B009FBD76 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A027BA2C59E96B009FBD76 /* Item.swift */; };
 		64A027BD2C59E96E009FBD76 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 64A027BC2C59E96E009FBD76 /* Assets.xcassets */; };
 		64A027C02C59E96E009FBD76 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 64A027BF2C59E96E009FBD76 /* Preview Assets.xcassets */; };
 		64A027CA2C59E96E009FBD76 /* NimbleSurveyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A027C92C59E96E009FBD76 /* NimbleSurveyTests.swift */; };
 		64A027D42C59E96E009FBD76 /* NimbleSurveyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A027D32C59E96E009FBD76 /* NimbleSurveyUITests.swift */; };
 		64A027D62C59E96E009FBD76 /* NimbleSurveyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A027D52C59E96E009FBD76 /* NimbleSurveyUITestsLaunchTests.swift */; };
+		64A027E42C5A1858009FBD76 /* Neuzeit S LT Std Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 64A027E32C5A1858009FBD76 /* Neuzeit S LT Std Book.otf */; };
+		64A027E82C5A1F1C009FBD76 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A027E72C5A1F1C009FBD76 /* Utils.swift */; };
+		64A027EE2C5A240F009FBD76 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A027ED2C5A240F009FBD76 /* SignInView.swift */; };
+		64A027F12C5A7849009FBD76 /* ResetPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A027F02C5A7849009FBD76 /* ResetPasswordView.swift */; };
+		64A027F32C5A80F6009FBD76 /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A027F22C5A80F6009FBD76 /* ViewExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,8 +40,6 @@
 /* Begin PBXFileReference section */
 		64A027B32C59E96B009FBD76 /* NimbleSurvey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NimbleSurvey.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		64A027B62C59E96B009FBD76 /* NimbleSurveyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleSurveyApp.swift; sourceTree = "<group>"; };
-		64A027B82C59E96B009FBD76 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		64A027BA2C59E96B009FBD76 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		64A027BC2C59E96E009FBD76 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		64A027BF2C59E96E009FBD76 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		64A027C52C59E96E009FBD76 /* NimbleSurveyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NimbleSurveyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -46,6 +47,12 @@
 		64A027CF2C59E96E009FBD76 /* NimbleSurveyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NimbleSurveyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		64A027D32C59E96E009FBD76 /* NimbleSurveyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleSurveyUITests.swift; sourceTree = "<group>"; };
 		64A027D52C59E96E009FBD76 /* NimbleSurveyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleSurveyUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		64A027E32C5A1858009FBD76 /* Neuzeit S LT Std Book.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Neuzeit S LT Std Book.otf"; sourceTree = "<group>"; };
+		64A027E52C5A1AF1009FBD76 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		64A027E72C5A1F1C009FBD76 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		64A027ED2C5A240F009FBD76 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		64A027F02C5A7849009FBD76 /* ResetPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordView.swift; sourceTree = "<group>"; };
+		64A027F22C5A80F6009FBD76 /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,9 +103,11 @@
 		64A027B52C59E96B009FBD76 /* NimbleSurvey */ = {
 			isa = PBXGroup;
 			children = (
+				64A027EA2C5A23C6009FBD76 /* Features */,
+				64A027E92C5A23BD009FBD76 /* Services */,
+				64A027E62C5A1F08009FBD76 /* Utils */,
+				64A027E52C5A1AF1009FBD76 /* Info.plist */,
 				64A027B62C59E96B009FBD76 /* NimbleSurveyApp.swift */,
-				64A027B82C59E96B009FBD76 /* ContentView.swift */,
-				64A027BA2C59E96B009FBD76 /* Item.swift */,
 				64A027BC2C59E96E009FBD76 /* Assets.xcassets */,
 				64A027BE2C59E96E009FBD76 /* Preview Content */,
 			);
@@ -128,6 +137,64 @@
 				64A027D52C59E96E009FBD76 /* NimbleSurveyUITestsLaunchTests.swift */,
 			);
 			path = NimbleSurveyUITests;
+			sourceTree = "<group>";
+		};
+		64A027E22C5A1849009FBD76 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				64A027E32C5A1858009FBD76 /* Neuzeit S LT Std Book.otf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		64A027E62C5A1F08009FBD76 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				64A027E22C5A1849009FBD76 /* Fonts */,
+				64A027EB2C5A23DB009FBD76 /* Extensions */,
+				64A027E72C5A1F1C009FBD76 /* Utils.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		64A027E92C5A23BD009FBD76 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		64A027EA2C5A23C6009FBD76 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				64A027EF2C5A7833009FBD76 /* Reset Password */,
+				64A027EC2C5A2400009FBD76 /* Sign In */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		64A027EB2C5A23DB009FBD76 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				64A027F22C5A80F6009FBD76 /* ViewExtension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		64A027EC2C5A2400009FBD76 /* Sign In */ = {
+			isa = PBXGroup;
+			children = (
+				64A027ED2C5A240F009FBD76 /* SignInView.swift */,
+				64A027F02C5A7849009FBD76 /* ResetPasswordView.swift */,
+			);
+			path = "Sign In";
+			sourceTree = "<group>";
+		};
+		64A027EF2C5A7833009FBD76 /* Reset Password */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Reset Password";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -236,6 +303,7 @@
 			files = (
 				64A027C02C59E96E009FBD76 /* Preview Assets.xcassets in Resources */,
 				64A027BD2C59E96E009FBD76 /* Assets.xcassets in Resources */,
+				64A027E42C5A1858009FBD76 /* Neuzeit S LT Std Book.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,9 +328,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				64A027B92C59E96B009FBD76 /* ContentView.swift in Sources */,
-				64A027BB2C59E96B009FBD76 /* Item.swift in Sources */,
 				64A027B72C59E96B009FBD76 /* NimbleSurveyApp.swift in Sources */,
+				64A027E82C5A1F1C009FBD76 /* Utils.swift in Sources */,
+				64A027EE2C5A240F009FBD76 /* SignInView.swift in Sources */,
+				64A027F12C5A7849009FBD76 /* ResetPasswordView.swift in Sources */,
+				64A027F32C5A80F6009FBD76 /* ViewExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -429,11 +499,15 @@
 				DEVELOPMENT_TEAM = 66MMSGR897;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NimbleSurvey/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Nimble Survey";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -458,11 +532,15 @@
 				DEVELOPMENT_TEAM = 66MMSGR897;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NimbleSurvey/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Nimble Survey";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
