@@ -25,9 +25,8 @@ struct ResetPasswordView: View {
                         Image("nimbleLogo")
                         
                         Text("Enter your email to receive instructions for resetting your password.")
+                            .textStyle(ParagraphTextStyle())
                             .multilineTextAlignment(.center)
-                            .foregroundColor(.white)
-                            .font(.system(size: 16, weight: .light))
                     }
                     .padding(.vertical, 130)
                     
@@ -35,17 +34,11 @@ struct ResetPasswordView: View {
                         
                         emailTextfield
                         
-                        Button {
-                            // action
-                        } label: {
-                            Text("Reset")
-                                .foregroundColor(.black)
-                                .font(.system(size: 17))
-                                .fontWeight(.semibold)
-                                .frame(maxWidth: .infinity, maxHeight: 52)
-                                .background( RoundedRectangle(cornerRadius: 26.0).fill(.white))
+                        Button("Reset") {
+                           
                         }
-                        .buttonStyle(.automatic)
+                        .buttonStyle(CapsuleButton())
+                        .frame(maxHeight: 52)
                         
                     }
                     Spacer()
