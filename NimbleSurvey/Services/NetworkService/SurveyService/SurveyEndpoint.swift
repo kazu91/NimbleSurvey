@@ -17,7 +17,7 @@ enum SurveyEndpoint: APIEndpoint {
     var path: String {
         switch self {
         case .getSurveyList:
-            return "/survey"
+            return "/surveys"
         }
     }
     
@@ -39,8 +39,8 @@ enum SurveyEndpoint: APIEndpoint {
         switch self {
         case .getSurveyList(let page, let size):
             return [
-                "page%5Bnumber%5D":page,
-                "page%5Bsize%5D": size
+                "page[number]":page,
+                "page[size]": size
             ]
         }
     }

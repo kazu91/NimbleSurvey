@@ -8,25 +8,25 @@
 import Foundation
 
 // MARK: - Survey
-struct Survey: Codable {
+struct SurveyListModel: Codable {
     let data: [SurveyData]
     let meta: SurveyMetaData
 }
 
 struct SurveyData: Codable {
     let id, type: String
-    let attributes: SurveyAttributes
+    let attributes: Survey
 }
 
 // MARK: - Attributes
-struct SurveyAttributes: Codable {
-    let title, description, thankEmailAboveThreshold, thankEmailBelowThreshold: String
+struct Survey: Codable {
+    let title, description: String
     let isActive: Bool
     let coverImageURL: String
     let createdAt, activeAt: String
-    let inactiveAt: JSONNull?
     let surveyType: String
-
+    let inactiveAt, thankEmailAboveThreshold, thankEmailBelowThreshold: String?
+    
     enum CodingKeys: String, CodingKey {
         case title, description
         case thankEmailAboveThreshold = "thank_email_above_threshold"

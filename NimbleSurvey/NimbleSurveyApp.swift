@@ -26,6 +26,10 @@ final class KeychainManager {
     func get(_ key: String) -> String? {
         return keychain.get(key)
     }
+    
+    func remove(_ key: String) {
+        keychain.delete(key)
+    }
 }
 
 @main

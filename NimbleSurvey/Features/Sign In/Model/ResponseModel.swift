@@ -7,7 +7,7 @@
 
 import Foundation
 
-
+struct Empty: Codable {}
 
 // MARK: - SignInResponse
 struct SignInResponse: Codable {

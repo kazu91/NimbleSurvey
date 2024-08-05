@@ -48,11 +48,7 @@ struct SignInView: View {
                             passwordTextfield
                             
                             Button("Sign In") {
-                                Task {
-                                   await viewModel.signIn()
-                                    
-                                }
-                               
+                                viewModel.signIn()
                             }
                             .buttonStyle(CapsuleButton())
                             .disabled(viewModel.isLoading || viewModel.isNotValid)
@@ -83,12 +79,22 @@ struct SignInView: View {
         }
         .onChange(of: viewModel.isShowingError, { _, newValue in
             if newValue {
-                router.showBasicAlert(text: viewModel.errorMessage)
+                router.showBasicAlert(text: viewModel.errorMessage) {
+                    viewModel.isShowingError = false
+                }
             }
         })
         .task {
             await executeFirstAnimationTimer()
             // if logged in exec only first
+            if KeychainManager.sharedInstance.get(Constant.KeychainKey.accessToken) != nil {
+                router.showScreen(.push) { _ in
+                    HomeView(
+                        userViewModel: UserViewModel(userService: UserService()),
+                        homeViewModel: HomeViewViewModel()
+                    )
+                }
+            }
             await executeSecondAnimationTimer()
         }
         

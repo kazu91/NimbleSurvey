@@ -38,7 +38,12 @@ class SignInViewModel: ObservableObject {
     }
     
     @MainActor
-    func signIn() async {
+    func signIn() {
+        if !email.isValidEmail  {
+            isShowingError = true
+            errorMessage = "Wrong email format!"
+            return
+        }
         let task = Task(priority: .high) {
             isLoading = true
             defer { isLoading = false }
@@ -48,16 +53,18 @@ class SignInViewModel: ObservableObject {
                 KeychainManager.sharedInstance.set(signInResponse.data.attributes.accessToken, forKey: Constant.KeychainKey.accessToken)
                 KeychainManager.sharedInstance.set(signInResponse.data.attributes.refreshToken, forKey: Constant.KeychainKey.refreshToken)
                 
+                password = ""
+                
                 router.showScreen(.push) { _ in
-                    HomeView()
+                    HomeView(userViewModel: UserViewModel(userService: UserService()), homeViewModel: HomeViewViewModel())
                 }
                 
             } catch {
                 switch error {
-                case APIError.serverDown:
+                case APIError.serverError:
                     errorMessage = "Please try again later!"
-                case APIError.clientSide(let message):
-                    errorMessage = message
+                case APIError.clientError:
+                    errorMessage = "Wrong email or password"
                 default: break
                 }
                 isShowingError = true

@@ -14,11 +14,11 @@ enum UserEndpoint: APIEndpoint {
     case signInWithEmail(email: String, password: String)
     case refeshToken
     case logout
-    case forgotPassword
+    case forgotPassword(email: String)
     
     var baseURL: URL {
         switch self {
-        case .forgotPassword:
+        case .forgotPassword, .getUserProfile:
             return URL(string: "https://survey-api.nimblehq.co/api/v1")!
         default:
             return URL(string: "https://survey-api.nimblehq.co/api/v1/oauth")!
@@ -35,7 +35,7 @@ enum UserEndpoint: APIEndpoint {
         case .refeshToken:
             return "/token"
         case .logout:
-            return "/token"
+            return "/revoke"
         case .forgotPassword:
             return "/passwords"
         }
@@ -82,12 +82,12 @@ enum UserEndpoint: APIEndpoint {
                     "client_id": Constant.SecretKey.key,
                     "client_secret": Constant.SecretKey.secret
             ]
-        case .forgotPassword:
-            return [ "user": [
-                "email": "your_email@example.com"
+        case .forgotPassword(let email):
+            return ["user": [
+                    "email": email
             ],
-                     "client_id": Constant.SecretKey.key,
-                     "client_secret": Constant.SecretKey.secret
+                    "client_id": Constant.SecretKey.key,
+                    "client_secret": Constant.SecretKey.secret
             ]
         }
     }

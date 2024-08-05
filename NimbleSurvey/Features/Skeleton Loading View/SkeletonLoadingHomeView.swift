@@ -32,7 +32,8 @@ struct SkeletonLoadingHomeView: View {
                 
                 
             }
-            .padding()
+            .padding(.horizontal)
+           
             Spacer()
             
             VStack(alignment: .leading) {

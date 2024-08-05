@@ -8,13 +8,13 @@
 import Foundation
 
 protocol SurveyServiceProtocol {
-    func getSurveyList(page: Int, size: Int) async throws -> Survey
+    func getSurveyList(page: Int, size: Int) async throws -> SurveyListModel
 }
 
 class SurveyService: SurveyServiceProtocol {
     let apiClient = URLSessionAPIClient<SurveyEndpoint>()
     
-    func getSurveyList(page: Int, size: Int) async throws -> Survey {
+    func getSurveyList(page: Int, size: Int) async throws -> SurveyListModel {
         return try await apiClient.request(.getSurveyList(pageNumber: page, pageSize: size))
         
     }

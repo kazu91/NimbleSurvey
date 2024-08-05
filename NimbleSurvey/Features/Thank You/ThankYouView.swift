@@ -16,7 +16,7 @@ struct ThankYouView: View {
     
     var body: some View {
         ZStack {
-            Color(#colorLiteral(red: 0.02501206377, green: 0, blue: 0.07619762007, alpha: 1)).ignoresSafeArea()
+            Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)).ignoresSafeArea()
             VStack {
                 LottieView(animationFileName: "complete", loopMode: .playOnce)
                     .frame(width: hasTimeElapsed ? 250 : 400, height:  hasTimeElapsed ? 200: 350)

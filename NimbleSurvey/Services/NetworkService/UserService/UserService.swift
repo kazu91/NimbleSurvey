@@ -11,8 +11,8 @@ protocol UserServiceProtocol {
     func signInWithEmail(email: String, password: String) async throws -> SignInResponse
     func getUserProfile() async throws -> UserModel
     func refeshToken() async throws -> SignInResponse
-    func logout() async throws -> Never
-    func forgotPassword() async throws -> ForgotResponse
+    func logout() async throws -> Empty
+    func forgotPassword(email: String) async throws -> ForgotResponse
 }
 
 class UserService: UserServiceProtocol {
@@ -28,13 +28,13 @@ class UserService: UserServiceProtocol {
 
     }
     
-    func logout() async throws -> Never {
+    func logout() async throws -> Empty {
         return try await apiClient.request(.logout)
 
     }
     
-    func forgotPassword() async throws -> ForgotResponse {
-        return try await apiClient.request(.forgotPassword)
+    func forgotPassword(email: String) async throws -> ForgotResponse {
+        return try await apiClient.request(.forgotPassword(email: email))
     }
     
     func signInWithEmail(email: String, password: String) async throws -> SignInResponse {

@@ -12,7 +12,8 @@ import SwiftfulRouting
 struct HomeView: View {
     @Environment(\.router) var mainRouter
     
-    @State var currentPageIndex = 1
+    @StateObject var userViewModel: UserViewModel
+    @StateObject var homeViewModel: HomeViewViewModel
     
     let avatarheight: CGFloat = 48
     let dotSize: CGFloat = 8
@@ -20,65 +21,113 @@ struct HomeView: View {
     var inactiveTine = Color.gray.opacity(0.7)
     var activeTint = Color.white
     
-    let titles = ["Working from home Check-In", "Career training and development", "Inclusion and belonging"]
-    let messages = ["We would like to know what are your goals and skills you wanted", "Building a workplace culture that prioritizes belonging and inclusio", "We would like to know how you feel about our work from home"]
-    
     var body: some View {
-        ZStack {
-            Image("authBgImage")
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
-            
-            VStack(spacing: 0)  {
-                headerView()
-                    .safeAreaPadding(.top, 32)
-                    
+        
+        VStack {
+            if homeViewModel.isLoading {
+                SkeletonLoadingHomeView()
                 
-                Spacer()
-                
-                pagingView()
-                
-                VStack {
-                    VStack(spacing: 12) {
-                        Text(titles[currentPageIndex - 1])
-                            .textStyle(Display2TextStyle())
-                            .multilineTextAlignment(.center)
-                            .lineLimit(2)
-                            .frame(height: 68)
-                        Text(messages[currentPageIndex - 1])
-                            .textStyle(ParagraphTextStyle())
-                            .multilineTextAlignment(.center)
-                            .lineLimit(2)
+            } else {
+                if homeViewModel.surveys.isEmpty {
+                    Button("Back to login screen") {
+                        mainRouter.dismissScreen()
                     }
-                    .padding(.horizontal, 20)
-                    .animation(.default, value: currentPageIndex)
-                    
-                    Button("Take This Survey") {
-                        mainRouter.showScreen(.fullScreenCover) { _ in
-                            ThankYouView()
+                } else {
+                    GeometryReader { proxy in
+                        ZStack {
+                            WebImage(url: URL(string: homeViewModel.surveys[homeViewModel.currentPageIndex - 1].attributes.coverImageURL)) { image in
+                                image
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: proxy.size.width, height: proxy.size.height)
+                            } placeholder: {
+                                Rectangle().foregroundColor(.gray)
+                            }
+                            .animation(.easeInOut, value: homeViewModel.currentPageIndex)
+                            
+                            
+                            VStack(spacing: 0)  {
+                                headerView()
+                                    .safeAreaPadding(.top, 32)
+                                
+                                
+                                Spacer()
+                                
+                                pagingView()
+                                    .frame(width: proxy.size.width)
+                                
+                                VStack {
+                                    titleSectionView()
+                                    
+                                    takeSurveyButton()
+                                }
+                                .safeAreaPadding(.bottom, 36)
+                            }
+                            
                         }
                     }
-                    .buttonStyle(CapsuleButton())
-                    .padding()
+                    .ignoresSafeArea(.all)
                 }
-                .safeAreaPadding(.bottom, 36)
             }
         }
         .navigationBarBackButtonHidden()
         .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
             .onEnded({ value in
                 if value.translation.width < 0 {
-                    currentPageIndex += 1
+                    if homeViewModel.currentPageIndex == homeViewModel.surveys.count {
+                        return
+                    }
+                    homeViewModel.currentPageIndex += 1
+                }
+                
+                if value.translation.height < 0 {
+                    // up
+                }
+                
+                if value.translation.height > 0 {
+                    // down
                 }
                 
                 if value.translation.width > 0 {
-                    if currentPageIndex == 1 {
+                    if homeViewModel.currentPageIndex == 1 {
                         return
                     }
-                    currentPageIndex -= 1
+                    homeViewModel.currentPageIndex -= 1
                 }
             }))
+        .onChange(of: homeViewModel.isShowingError, { _, newValue in
+            if newValue {
+                mainRouter.showBasicAlert(text: homeViewModel.errorMessage)
+                {
+                    homeViewModel.isShowingError = false
+                }
+            }
+        })
+        .onChange(of: userViewModel.isShowingError, { _, newValue in
+            if newValue {
+                mainRouter.showBasicAlert(text: userViewModel.message)
+                {
+                    userViewModel.isShowingError = false
+                }
+            }
+        })
+        // load next page
+        .onChange(of: homeViewModel.currentPageIndex , { _ , newValue in
+            if homeViewModel.currentPageIndex == homeViewModel.surveys.count - 1 &&  homeViewModel.canLoadNextPage {
+                Task {
+                    homeViewModel.page += 1
+                    await homeViewModel.getSurveyList()
+                }
+            }
+        })
+        .onAppear {
+            Task {
+                homeViewModel.isLoading = true
+                await userViewModel.getUserInfo()
+                await homeViewModel.getSurveyList()
+                homeViewModel.isLoading = false
+            }
+        }
         
     }
     
@@ -98,15 +147,16 @@ struct HomeView: View {
             
             Spacer()
             
-            WebImage(url: URL(string: "https://picsum.photos/200"))
+            WebImage(url: URL(string: userViewModel.user.data?.attributes.avatarURL ?? ""))
                 .resizable()
                 .frame(width: avatarheight, height: avatarheight)
                 .cornerRadius(avatarheight / 2)
                 .padding()
         }
-        .background(Color.white.opacity(0.3))
+        .background(Color.black.opacity(0.3))
         .cornerRadius(25)
-        .padding()
+        .padding(.horizontal)
+        .padding(.top, 38)
         .onTapGesture {
             mainRouter.showModal(transition: .move(edge: .leading), animation: .easeInOut, alignment: .leading, backgroundColor: Color.black.opacity(0.35), ignoreSafeArea: true) {
                 modalView()
@@ -117,10 +167,10 @@ struct HomeView: View {
     func modalView() -> some View {
         VStack(alignment: .leading,spacing: 0) {
             HStack {
-                Text("Name")
+                Text(userViewModel.user.data?.attributes.name ?? "User Name")
                     .textStyle(LargeTitleTextStyle())
                 Spacer(minLength: 0)
-                WebImage(url: URL(string:  "https://picsum.photos/200"))
+                WebImage(url: URL(string: userViewModel.user.data?.attributes.avatarURL ?? ""))
                     .resizable()
                     .frame(width: avatarheight, height: avatarheight)
                     .cornerRadius(avatarheight / 2)
@@ -135,7 +185,11 @@ struct HomeView: View {
             
             
             Button {
-                mainRouter.dismissScreen()
+                Task {
+                    await userViewModel.logout()
+                    
+                    mainRouter.dismissScreen()
+                }
             } label: {
                 Text("Logout")
                     .textStyle(MediumLinkTextStyle())
@@ -147,30 +201,57 @@ struct HomeView: View {
         }
         .frame(maxHeight: .infinity)
         .frame(width: 250)
-        .background(.black.opacity(0.9))
+        .background(.black)
         .onTapGesture {
             mainRouter.dismissModal()
         }
     }
     
     func pagingView() -> some View {
+        
         HStack {
             withAnimation {
-                ForEach(1...3, id: \.self) { index in
+                ForEach(1...homeViewModel.surveys.count, id: \.self) { index in
                     Capsule(style: .circular)
-                        .fill(index == currentPageIndex ? activeTint : inactiveTine)
-                        .frame(width: (index == currentPageIndex) ? dotSize * 2 : dotSize, height: dotSize)
-                        .animation(.easeInOut, value: currentPageIndex)
+                        .fill(index == homeViewModel.currentPageIndex ? activeTint : inactiveTine)
+                        .frame(width: (index == homeViewModel.currentPageIndex) ? dotSize * 2 : dotSize, height: dotSize)
+                        .animation(.easeInOut, value: homeViewModel.currentPageIndex)
                 }
             }
         }
         .frame(height: 44)
     }
+    
+    func takeSurveyButton() -> some View {
+        Button("Take This Survey") {
+            mainRouter.showScreen(.fullScreenCover) { _ in
+                ThankYouView()
+            }
+        }
+        .buttonStyle(CapsuleButton())
+        .padding()
+    }
+    
+    func titleSectionView() -> some View {
+        VStack(spacing: 12) {
+            Text(homeViewModel.surveys[homeViewModel.currentPageIndex - 1].attributes.title)
+                .textStyle(Display2TextStyle())
+                .multilineTextAlignment(.center)
+                .lineLimit(2)
+                .frame(height: 68)
+            Text(homeViewModel.surveys[homeViewModel.currentPageIndex - 1].attributes.description)
+                .textStyle(ParagraphTextStyle())
+                .multilineTextAlignment(.center)
+                .lineLimit(2)
+        }
+        .padding(.horizontal, 20)
+        .animation(.default, value: homeViewModel.currentPageIndex)
+    }
 }
 
 #Preview {
     RouterView { _ in
-        HomeView()
+        HomeView(userViewModel: UserViewModel(userService: UserService()), homeViewModel: HomeViewViewModel())
     }
-   
+    
 }
