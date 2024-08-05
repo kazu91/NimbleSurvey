@@ -7,9 +7,12 @@
 
 import SwiftUI
 import SwiftfulRouting
+import SwiftData
 
 struct SignInView: View {
+    @Environment(NetworkMonitor.self) var networkMonitor
     @Environment(\.router) var router: AnyRouter
+    @Environment(\.modelContext) var modelContext
     @StateObject var viewModel: SignInViewModel
     
     @State var emailText = ""
@@ -23,6 +26,7 @@ struct SignInView: View {
     
     
     // MARK: - Body
+    
     var body: some View {
         ZStack {
             backgroundView
@@ -65,15 +69,7 @@ struct SignInView: View {
             }
             
             if viewModel.isLoading {
-                VStack {
-                    ProgressView()
-                        .controlSize(.large)
-                        .progressViewStyle(.circular)
-                }
-                
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .cornerRadius(40)
-                .background(.black.opacity(0.9))
+                loadingView()
                 
             }
         }
@@ -84,6 +80,9 @@ struct SignInView: View {
                 }
             }
         })
+        .onAppear {
+            viewModel.modelContext = modelContext
+        }
         .task {
             await executeFirstAnimationTimer()
             // if logged in exec only first
@@ -91,7 +90,9 @@ struct SignInView: View {
                 router.showScreen(.push) { _ in
                     HomeView(
                         userViewModel: UserViewModel(userService: UserService()),
-                        homeViewModel: HomeViewViewModel()
+                        homeViewModel: HomeViewViewModel(networkMonitor: networkMonitor,
+                                                         modelContent: modelContext
+                        )
                     )
                 }
             }
@@ -149,6 +150,18 @@ struct SignInView: View {
         
     }
     
+    fileprivate func loadingView() -> some View {
+        return VStack {
+            ProgressView()
+                .controlSize(.large)
+                .progressViewStyle(.circular)
+        }
+        
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .cornerRadius(40)
+        .background(.black.opacity(0.9))
+    }
+    
     // MARK: - Functions
     
     private func executeFirstAnimationTimer() async {
@@ -162,8 +175,8 @@ struct SignInView: View {
     }
     
 }
-#Preview {
-    RouterView { router in
-        SignInView(viewModel: SignInViewModel(router: router))
-    }
-}
+//#Preview {
+//    RouterView { router in
+//        SignInView(viewModel: SignInViewModel(router: router, networkMonitor: NetworkMonitor(), modelContext: ModelContext(ModelContainer(for: SurveyData.self))))
+//    }
+//}

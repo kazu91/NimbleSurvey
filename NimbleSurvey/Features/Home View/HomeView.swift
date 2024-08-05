@@ -8,8 +8,10 @@
 import SwiftUI
 import SDWebImageSwiftUI
 import SwiftfulRouting
+import SwiftData
 
 struct HomeView: View {
+    @Environment(NetworkMonitor.self) var networkMonitor
     @Environment(\.router) var mainRouter
     
     @StateObject var userViewModel: UserViewModel
@@ -24,27 +26,26 @@ struct HomeView: View {
     var body: some View {
         
         VStack {
-            if homeViewModel.isLoading {
+            if homeViewModel.isFirstTimeLoading {
                 SkeletonLoadingHomeView()
                 
             } else {
                 if homeViewModel.surveys.isEmpty {
-                    Button("Back to login screen") {
-                        mainRouter.dismissScreen()
+                    ContentUnavailableView("Survey Error", systemImage: "doc.plaintext", description: Text("Cannot retrieve surveys, please try again later"))
+                    Button("Retry") {
+                        getData()
+                    }
+                    Button("Log out") {
+                        Task {
+                            await userViewModel.logout()
+                            mainRouter.dismissScreen()
+                        }
                     }
                 } else {
                     GeometryReader { proxy in
                         ZStack {
-                            WebImage(url: URL(string: homeViewModel.surveys[homeViewModel.currentPageIndex - 1].attributes.coverImageURL)) { image in
-                                image
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: proxy.size.width, height: proxy.size.height)
-                            } placeholder: {
-                                Rectangle().foregroundColor(.gray)
-                            }
-                            .animation(.easeInOut, value: homeViewModel.currentPageIndex)
-                            
+                           
+                            backgroundView(proxy: proxy)
                             
                             VStack(spacing: 0)  {
                                 headerView()
@@ -63,8 +64,12 @@ struct HomeView: View {
                                 }
                                 .safeAreaPadding(.bottom, 36)
                             }
+                            if homeViewModel.isLoading {
+                                loadingView()
+                            }
                             
                         }
+                        
                     }
                     .ignoresSafeArea(.all)
                 }
@@ -73,22 +78,29 @@ struct HomeView: View {
         .navigationBarBackButtonHidden()
         .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
             .onEnded({ value in
-                if value.translation.width < 0 {
+               
+                
+                if value.translation.height < 0 {
+                    print("up")
+                }
+                
+                if value.translation.height > 50 {
+                    print("down")
+                    Task {
+                        await homeViewModel.refreshView()
+                    }
+                }
+                
+                if value.translation.width < 50 {
+                    print("right")
                     if homeViewModel.currentPageIndex == homeViewModel.surveys.count {
                         return
                     }
                     homeViewModel.currentPageIndex += 1
                 }
                 
-                if value.translation.height < 0 {
-                    // up
-                }
-                
-                if value.translation.height > 0 {
-                    // down
-                }
-                
-                if value.translation.width > 0 {
+                if value.translation.width > 50 {
+                    print("left")
                     if homeViewModel.currentPageIndex == 1 {
                         return
                     }
@@ -115,24 +127,34 @@ struct HomeView: View {
         .onChange(of: homeViewModel.currentPageIndex , { _ , newValue in
             if homeViewModel.currentPageIndex == homeViewModel.surveys.count - 1 &&  homeViewModel.canLoadNextPage {
                 Task {
+                    homeViewModel.isLoading = true
                     homeViewModel.page += 1
-                    await homeViewModel.getSurveyList()
+                    await homeViewModel.getSurveyListFromServer()
+                    homeViewModel.isLoading = false
                 }
             }
         })
         .onAppear {
-            Task {
-                homeViewModel.isLoading = true
-                await userViewModel.getUserInfo()
-                await homeViewModel.getSurveyList()
-                homeViewModel.isLoading = false
-            }
+            getData()
         }
         
     }
     
     
     // MARK: - View
+    
+    func backgroundView(proxy: GeometryProxy) -> some View {
+        WebImage(url: URL(string: homeViewModel.surveys[homeViewModel.currentPageIndex - 1].attributes.coverImageURL)) { image in
+            image
+                .resizable()
+                .scaledToFill()
+                .frame(width: proxy.size.width, height: proxy.size.height)
+            
+        } placeholder: {
+            Rectangle().foregroundColor(.gray)
+        }
+        .animation(.easeInOut, value: homeViewModel.currentPageIndex)
+    }
     
     func headerView() -> some View {
         HStack {
@@ -239,7 +261,7 @@ struct HomeView: View {
                 .multilineTextAlignment(.center)
                 .lineLimit(2)
                 .frame(height: 68)
-            Text(homeViewModel.surveys[homeViewModel.currentPageIndex - 1].attributes.description)
+            Text(homeViewModel.surveys[homeViewModel.currentPageIndex - 1].attributes.secondTitle)
                 .textStyle(ParagraphTextStyle())
                 .multilineTextAlignment(.center)
                 .lineLimit(2)
@@ -247,11 +269,53 @@ struct HomeView: View {
         .padding(.horizontal, 20)
         .animation(.default, value: homeViewModel.currentPageIndex)
     }
+    
+    fileprivate func loadingView() -> some View {
+        return VStack {
+            ProgressView()
+                .controlSize(.large)
+                .progressViewStyle(.circular)
+        }
+        
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .cornerRadius(40)
+        .background(.black.opacity(0.9))
+    }
+    
+    // MARK: - Func
+    
+    func getData() {
+        Task {
+            homeViewModel.isFirstTimeLoading = true
+            homeViewModel.fetchSurveys()
+            await userViewModel.getUserInfo()
+            await homeViewModel.getSurveyListFromServer()
+            homeViewModel.isFirstTimeLoading = false
+        }
+    }
 }
 
 #Preview {
-    RouterView { _ in
-        HomeView(userViewModel: UserViewModel(userService: UserService()), homeViewModel: HomeViewViewModel())
-    }
+    var networkMonitor = NetworkMonitor()
     
+   var sharedModelContainer: ModelContainer = {
+        let schema = Schema([
+            SurveyData.self,
+            Survey.self
+        ])
+        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+
+        do {
+            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+        } catch {
+            fatalError("Could not create ModelContainer: \(error)")
+        }
+    }()
+        
+    return RouterView { _ in
+        HomeView(userViewModel: UserViewModel(userService: UserService()), homeViewModel: HomeViewViewModel(
+            networkMonitor: NetworkMonitor(),
+            modelContent: ModelContext(sharedModelContainer)))
+    }
+    .environment(NetworkMonitor())
 }

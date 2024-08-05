@@ -25,14 +25,30 @@ class UserViewModel: ObservableObject {
     }
     
     @MainActor
-    func getUserInfo() async {
+    func getUserInfo(triesNumber: Int = 0) async {
+        // refresh token could be expired
+        if triesNumber > 1 {
+            isShowingError = true
+            message = "Please login again!"
+            return
+        }
+        
         do {
             let user: UserModel = try await userService.apiClient.request(.getUserProfile)
             
             self.user = user
         } catch {
+            switch error {
+            case APIError.accessTokenRevoked:
+                if triesNumber == 0 {
+                    await refreshAccessToken()
+                    await getUserInfo(triesNumber: triesNumber + 1)
+                }
+            default:
+                message = error.localizedDescription
+            }
             isShowingError = true
-            message = error.localizedDescription
+          
         }
     }
     
@@ -45,8 +61,7 @@ class UserViewModel: ObservableObject {
         do {
             let _: Empty = try await userService.apiClient.request(.logout)
         } catch {
-            isShowingError = true
-            message = error.localizedDescription
+            print(error.localizedDescription)
         }
     }
     
@@ -60,6 +75,20 @@ class UserViewModel: ObservableObject {
             }
             let response: ForgotResponse = try await userService.apiClient.request(.forgotPassword(email: email))
             message = response.meta.message
+        } catch {
+            isShowingError = true
+            message = error.localizedDescription
+        }
+    }
+    
+    @MainActor
+    func refreshAccessToken() async {
+        do {
+            let refresh: SignInResponse  = try await userService.apiClient.request(.refeshToken)
+            
+            KeychainManager.sharedInstance.set(refresh.data.attributes.accessToken, forKey: Constant.KeychainKey.accessToken)
+            KeychainManager.sharedInstance.set(refresh.data.attributes.refreshToken, forKey: Constant.KeychainKey.refreshToken)
+            
         } catch {
             isShowingError = true
             message = error.localizedDescription

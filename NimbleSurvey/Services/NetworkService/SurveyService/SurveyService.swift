@@ -16,6 +16,5 @@ class SurveyService: SurveyServiceProtocol {
     
     func getSurveyList(page: Int, size: Int) async throws -> SurveyListModel {
         return try await apiClient.request(.getSurveyList(pageNumber: page, pageSize: size))
-        
     }
 }

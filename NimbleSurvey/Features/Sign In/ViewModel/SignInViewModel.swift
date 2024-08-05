@@ -9,11 +9,13 @@ import SwiftUI
 import Combine
 import SwiftfulRouting
 import KeychainSwift
+import SwiftData
 
 class SignInViewModel: ObservableObject {
-    
     private let router: AnyRouter
     private let userService: UserService
+    private let networkMonitor: NetworkMonitor
+    var modelContext: ModelContext?
     private var tasks: [Task<Void, Never>] = []
     
     @Published var email: String = ""
@@ -24,9 +26,10 @@ class SignInViewModel: ObservableObject {
 
     var errorMessage: String = ""
     
-    init(router: AnyRouter) {
+    init(router: AnyRouter, networkMonitor: NetworkMonitor) {
         self.router = router
         self.userService = UserService()
+        self.networkMonitor = networkMonitor
     }
     
     deinit {
@@ -54,9 +57,17 @@ class SignInViewModel: ObservableObject {
                 KeychainManager.sharedInstance.set(signInResponse.data.attributes.refreshToken, forKey: Constant.KeychainKey.refreshToken)
                 
                 password = ""
-                
+                guard let modelContext = modelContext else {
+                    return
+                }
                 router.showScreen(.push) { _ in
-                    HomeView(userViewModel: UserViewModel(userService: UserService()), homeViewModel: HomeViewViewModel())
+                    HomeView(
+                        userViewModel: UserViewModel(userService: UserService()),
+                        homeViewModel: HomeViewViewModel(
+                            networkMonitor: self.networkMonitor,
+                            modelContent: modelContext
+                        )
+                    )
                 }
                 
             } catch {

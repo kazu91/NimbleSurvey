@@ -41,6 +41,8 @@
 		64A9EDF82C5FC44B00A1FC02 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A9EDF72C5FC44B00A1FC02 /* UserModel.swift */; };
 		64A9EDFD2C5FC79400A1FC02 /* SurveyEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A9EDFC2C5FC79400A1FC02 /* SurveyEndpoint.swift */; };
 		64A9EDFF2C5FCCAE00A1FC02 /* SurveyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A9EDFE2C5FCCAE00A1FC02 /* SurveyService.swift */; };
+		64A9EE012C606D5900A1FC02 /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A9EE002C606D5900A1FC02 /* NetworkMonitor.swift */; };
+		64A9EE062C6185B100A1FC02 /* MockUserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A9EE052C6185B100A1FC02 /* MockUserService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +97,8 @@
 		64A9EDF72C5FC44B00A1FC02 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		64A9EDFC2C5FC79400A1FC02 /* SurveyEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyEndpoint.swift; sourceTree = "<group>"; };
 		64A9EDFE2C5FCCAE00A1FC02 /* SurveyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyService.swift; sourceTree = "<group>"; };
+		64A9EE002C606D5900A1FC02 /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
+		64A9EE052C6185B100A1FC02 /* MockUserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -173,6 +177,7 @@
 			isa = PBXGroup;
 			children = (
 				64A027C92C59E96E009FBD76 /* NimbleSurveyTests.swift */,
+				64A9EE052C6185B100A1FC02 /* MockUserService.swift */,
 			);
 			path = NimbleSurveyTests;
 			sourceTree = "<group>";
@@ -208,6 +213,7 @@
 		64A027E92C5A23BD009FBD76 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				64A9EE022C6169AF00A1FC02 /* StorageService */,
 				64A9EDE12C5E30DC00A1FC02 /* NetworkService */,
 			);
 			path = Services;
@@ -310,6 +316,7 @@
 				64A9EDE42C5E36F300A1FC02 /* UserService */,
 				64A9EDE22C5E31F700A1FC02 /* APIEndpoint.swift */,
 				64A9EDEA2C5E378200A1FC02 /* APIClient.swift */,
+				64A9EE002C606D5900A1FC02 /* NetworkMonitor.swift */,
 			);
 			path = NetworkService;
 			sourceTree = "<group>";
@@ -356,6 +363,13 @@
 				64A027ED2C5A240F009FBD76 /* SignInView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		64A9EE022C6169AF00A1FC02 /* StorageService */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = StorageService;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -503,6 +517,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				64A9EDF42C5ECF9100A1FC02 /* HomeViewViewModel.swift in Sources */,
+				64A9EE012C606D5900A1FC02 /* NetworkMonitor.swift in Sources */,
 				64A9EDF82C5FC44B00A1FC02 /* UserModel.swift in Sources */,
 				64A027B72C59E96B009FBD76 /* NimbleSurveyApp.swift in Sources */,
 				64A9EDC12C5C39B800A1FC02 /* TextExtension+Styles.swift in Sources */,
@@ -532,6 +547,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				64A9EE062C6185B100A1FC02 /* MockUserService.swift in Sources */,
 				64A027CA2C59E96E009FBD76 /* NimbleSurveyTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -685,6 +701,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"NimbleSurvey/Preview Content\"";
@@ -693,6 +710,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NimbleSurvey/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Nimble Survey";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -707,9 +725,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = phuphan.kazu.NimbleSurvey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -718,6 +740,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"NimbleSurvey/Preview Content\"";
@@ -726,6 +749,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NimbleSurvey/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Nimble Survey";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -740,9 +764,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = phuphan.kazu.NimbleSurvey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

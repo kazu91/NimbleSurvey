@@ -14,6 +14,7 @@ protocol APIClient {
 
 
 enum APIError: Error {
+    case noInternetConnection
     case invalidResponse
     case clientError(message: String)
     case accessTokenRevoked
