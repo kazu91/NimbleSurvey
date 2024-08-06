@@ -18,7 +18,7 @@ Application functions:
 
 ### Known issues
 
-* Sometimes, data fetched from a remote server may not save correctly to the local storage, and re-staging it for testing may fail.
+* Sometimes, data fetched from a remote server may not save correctly to the local storage, hard to reproduce.
 
 ### Limitation
 * Lack of unit test cases
