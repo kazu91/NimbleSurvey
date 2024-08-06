@@ -31,16 +31,7 @@ struct HomeView: View {
                 
             } else {
                 if homeViewModel.surveys.isEmpty {
-                    ContentUnavailableView("Survey Error", systemImage: "doc.plaintext", description: Text("Cannot retrieve surveys, please try again later"))
-                    Button("Retry") {
-                        getData()
-                    }
-                    Button("Log out") {
-                        Task {
-                            await userViewModel.logout()
-                            mainRouter.dismissScreen()
-                        }
-                    }
+                    contentUnavailable()
                 } else {
                     GeometryReader { proxy in
                         ZStack {
@@ -50,7 +41,6 @@ struct HomeView: View {
                             VStack(spacing: 0)  {
                                 headerView()
                                     .safeAreaPadding(.top, 32)
-                                
                                 
                                 Spacer()
                                 
@@ -67,9 +57,7 @@ struct HomeView: View {
                             if homeViewModel.isLoading {
                                 loadingView()
                             }
-                            
                         }
-                        
                     }
                     .ignoresSafeArea(.all)
                 }
@@ -79,28 +67,26 @@ struct HomeView: View {
         .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
             .onEnded({ value in
                
-                
+                // up
                 if value.translation.height < 0 {
-                    print("up")
                 }
-                
+                // down
                 if value.translation.height > 50 {
-                    print("down")
                     Task {
                         await homeViewModel.refreshView()
                     }
                 }
                 
-                if value.translation.width < 50 {
-                    print("right")
+                // right
+                if value.translation.width < 0 {
                     if homeViewModel.currentPageIndex == homeViewModel.surveys.count {
                         return
                     }
                     homeViewModel.currentPageIndex += 1
                 }
                 
-                if value.translation.width > 50 {
-                    print("left")
+                // left
+                if value.translation.width > 0 {
                     if homeViewModel.currentPageIndex == 1 {
                         return
                     }
@@ -125,7 +111,7 @@ struct HomeView: View {
         })
         // load next page
         .onChange(of: homeViewModel.currentPageIndex , { _ , newValue in
-            if homeViewModel.currentPageIndex == homeViewModel.surveys.count - 1 &&  homeViewModel.canLoadNextPage {
+            if homeViewModel.currentPageIndex == homeViewModel.surveys.count &&  homeViewModel.canLoadNextPage {
                 Task {
                     homeViewModel.isLoading = true
                     homeViewModel.page += 1
@@ -137,9 +123,7 @@ struct HomeView: View {
         .onAppear {
             getData()
         }
-        
     }
-    
     
     // MARK: - View
     
@@ -230,18 +214,31 @@ struct HomeView: View {
     }
     
     func pagingView() -> some View {
+        // skip first page calculation
         
-        HStack {
-            withAnimation {
-                ForEach(1...homeViewModel.surveys.count, id: \.self) { index in
-                    Capsule(style: .circular)
-                        .fill(index == homeViewModel.currentPageIndex ? activeTint : inactiveTine)
-                        .frame(width: (index == homeViewModel.currentPageIndex) ? dotSize * 2 : dotSize, height: dotSize)
-                        .animation(.easeInOut, value: homeViewModel.currentPageIndex)
+        return HStack {
+            if homeViewModel.currentIndexPage > 1 {
+                Image(systemName: "chevron.left.circle.fill")
+                    .foregroundColor(Color.white)
+            }
+            HStack {
+                withAnimation {
+                    ForEach(1...homeViewModel.capsuleCount, id: \.self) { index in
+                        Capsule(style: .circular)
+                            .fill(index == homeViewModel.pagingCurrentIndex ? activeTint : inactiveTine)
+                            .frame(width: (index == homeViewModel.pagingCurrentIndex) ? dotSize * 2 : dotSize, height: dotSize)
+                            .animation(.easeInOut, value: homeViewModel.currentPageIndex)
+                    }
                 }
             }
+            .frame(height: 44)
+            if homeViewModel.canLoadNextPage || homeViewModel.surveys.count > homeViewModel.currentIndexPage * homeViewModel.pageSize {
+                Image(systemName: "chevron.right.circle.fill")
+                    .foregroundColor(Color.white)
+            }
+           
         }
-        .frame(height: 44)
+        
     }
     
     func takeSurveyButton() -> some View {
@@ -282,6 +279,21 @@ struct HomeView: View {
         .background(.black.opacity(0.9))
     }
     
+    func contentUnavailable() -> some View {
+        VStack {
+            ContentUnavailableView("Survey Error", systemImage: "doc.plaintext", description: Text("Cannot retrieve surveys, please try again later"))
+            Button("Retry") {
+                getData()
+            }
+            Button("Log out") {
+                Task {
+                    await userViewModel.logout()
+                    mainRouter.dismissScreen()
+                }
+            }
+        }
+    }
+    
     // MARK: - Func
     
     func getData() {
@@ -295,27 +307,27 @@ struct HomeView: View {
     }
 }
 
-#Preview {
-    var networkMonitor = NetworkMonitor()
-    
-   var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            SurveyData.self,
-            Survey.self
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
-        
-    return RouterView { _ in
-        HomeView(userViewModel: UserViewModel(userService: UserService()), homeViewModel: HomeViewViewModel(
-            networkMonitor: NetworkMonitor(),
-            modelContent: ModelContext(sharedModelContainer)))
-    }
-    .environment(NetworkMonitor())
-}
+//#Preview {
+//    var networkMonitor = NetworkMonitor()
+//    
+//   var sharedModelContainer: ModelContainer = {
+//        let schema = Schema([
+//            SurveyData.self,
+//            Survey.self
+//        ])
+//        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+//
+//        do {
+//            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+//        } catch {
+//            fatalError("Could not create ModelContainer: \(error)")
+//        }
+//    }()
+//        
+//    return RouterView { _ in
+//        HomeView(userViewModel: UserViewModel(userService: UserService()), homeViewModel: HomeViewViewModel(
+//            networkMonitor: NetworkMonitor(),
+//            modelContent: ModelContext(sharedModelContainer)))
+//    }
+//    .environment(NetworkMonitor())
+//}

@@ -25,6 +25,27 @@ class HomeViewViewModel: ObservableObject {
     var canLoadNextPage: Bool = false
     let pageSize = 10
     
+    // current page of the highlighted capsule
+    // not page# of pagination
+    var currentIndexPage: Int {
+        let pageIndex = Double(currentPageIndex)
+        return (pageIndex / Double(pageSize)).rounded(.up).toInt() ?? 0
+    }
+    // current index on current page
+    var pagingCurrentIndex: Int {
+        currentIndexPage == 1 ? currentPageIndex :
+        currentPageIndex - (currentIndexPage - 1) * pageSize
+    }
+    
+    // current visible capsule, max 10 per page
+    var capsuleCount: Int {
+        let result = surveys.count - (currentIndexPage - 1) * pageSize
+        if result > 10 {
+            return 10
+        }
+        return result
+    }
+    
     
     var errorMessage: String = ""
     
@@ -36,7 +57,7 @@ class HomeViewViewModel: ObservableObject {
     }
     
     deinit {
-       // tasks.forEach({ $0.cancel() })
+        // tasks.forEach({ $0.cancel() })
     }
     
     //MARK: - Functions
@@ -92,18 +113,18 @@ class HomeViewViewModel: ObservableObject {
     /// Xcode 16 Beta
     /// https://forums.developer.apple.com/forums/thread/756769
     /// i'll try to work around this by remove and then add new array of data
-//    func updateOrAddNewSurvey(remoteSurvey: [SurveyData]) {
-//        do {
-//            for survey in remoteSurvey {
-//                if let localSurvey = modelContext.model(for: survey.id) as? SurveyData {
-//                    localSurvey.attributes = survey.attributes
-//                }
-//            }
-//            try modelContext.save()
-//        } catch {
-//            print(error.localizedDescription)
-//        }
-//    }
+    //    func updateOrAddNewSurvey(remoteSurvey: [SurveyData]) {
+    //        do {
+    //            for survey in remoteSurvey {
+    //                if let localSurvey = modelContext.model(for: survey.id) as? SurveyData {
+    //                    localSurvey.attributes = survey.attributes
+    //                }
+    //            }
+    //            try modelContext.save()
+    //        } catch {
+    //            print(error.localizedDescription)
+    //        }
+    //    }
     
     func addNewSurveys(surveys: [SurveyData]) {
         for survey in surveys {
@@ -117,7 +138,7 @@ class HomeViewViewModel: ObservableObject {
             let descriptor = FetchDescriptor<SurveyData>(sortBy: [SortDescriptor(\.attributes.createdAt)])
             surveys = try modelContext.fetch(descriptor)
         } catch {
-            print(error.localizedDescription)
+            print("Fail get survey")
         }
     }
     

@@ -34,7 +34,7 @@
 		64A9EDE92C5E375A00A1FC02 /* UserEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A9EDE82C5E375A00A1FC02 /* UserEndPoint.swift */; };
 		64A9EDEB2C5E378200A1FC02 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A9EDEA2C5E378200A1FC02 /* APIClient.swift */; };
 		64A9EDED2C5E521300A1FC02 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A9EDEC2C5E521300A1FC02 /* SignInViewModel.swift */; };
-		64A9EDF02C5E564100A1FC02 /* ResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A9EDEF2C5E564100A1FC02 /* ResponseModel.swift */; };
+		64A9EDF02C5E564100A1FC02 /* SignInResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A9EDEF2C5E564100A1FC02 /* SignInResponseModel.swift */; };
 		64A9EDF22C5E575400A1FC02 /* SurveyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A9EDF12C5E575400A1FC02 /* SurveyModel.swift */; };
 		64A9EDF42C5ECF9100A1FC02 /* HomeViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A9EDF32C5ECF9100A1FC02 /* HomeViewViewModel.swift */; };
 		64A9EDF62C5FC3B900A1FC02 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A9EDF52C5FC3B900A1FC02 /* UserViewModel.swift */; };
@@ -90,7 +90,7 @@
 		64A9EDE82C5E375A00A1FC02 /* UserEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEndPoint.swift; sourceTree = "<group>"; };
 		64A9EDEA2C5E378200A1FC02 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		64A9EDEC2C5E521300A1FC02 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
-		64A9EDEF2C5E564100A1FC02 /* ResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseModel.swift; sourceTree = "<group>"; };
+		64A9EDEF2C5E564100A1FC02 /* SignInResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInResponseModel.swift; sourceTree = "<group>"; };
 		64A9EDF12C5E575400A1FC02 /* SurveyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyModel.swift; sourceTree = "<group>"; };
 		64A9EDF32C5ECF9100A1FC02 /* HomeViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewViewModel.swift; sourceTree = "<group>"; };
 		64A9EDF52C5FC3B900A1FC02 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
@@ -278,9 +278,9 @@
 		64A027FA2C5B8624009FBD76 /* Home View */ = {
 			isa = PBXGroup;
 			children = (
-				64A027FE2C5B8AD7009FBD76 /* HomeView.swift */,
-				64A9EDF32C5ECF9100A1FC02 /* HomeViewViewModel.swift */,
-				64A9EDF12C5E575400A1FC02 /* SurveyModel.swift */,
+				64A9EE072C61C9C400A1FC02 /* View */,
+				64A9EE082C61C9D400A1FC02 /* ViewModel */,
+				64A9EE092C61C9E000A1FC02 /* Model */,
 			);
 			path = "Home View";
 			sourceTree = "<group>";
@@ -342,7 +342,7 @@
 		64A9EDF92C5FC4B300A1FC02 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				64A9EDEF2C5E564100A1FC02 /* ResponseModel.swift */,
+				64A9EDEF2C5E564100A1FC02 /* SignInResponseModel.swift */,
 				64A9EDF72C5FC44B00A1FC02 /* UserModel.swift */,
 			);
 			path = Model;
@@ -370,6 +370,30 @@
 			children = (
 			);
 			path = StorageService;
+			sourceTree = "<group>";
+		};
+		64A9EE072C61C9C400A1FC02 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				64A027FE2C5B8AD7009FBD76 /* HomeView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		64A9EE082C61C9D400A1FC02 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				64A9EDF32C5ECF9100A1FC02 /* HomeViewViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		64A9EE092C61C9E000A1FC02 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				64A9EDF12C5E575400A1FC02 /* SurveyModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -537,7 +561,7 @@
 				64A9EDD02C5D5F5A00A1FC02 /* ThankYouView.swift in Sources */,
 				64A9EDF22C5E575400A1FC02 /* SurveyModel.swift in Sources */,
 				64A9EDCA2C5D59AF00A1FC02 /* LottieView.swift in Sources */,
-				64A9EDF02C5E564100A1FC02 /* ResponseModel.swift in Sources */,
+				64A9EDF02C5E564100A1FC02 /* SignInResponseModel.swift in Sources */,
 				64A027F12C5A7849009FBD76 /* ResetPasswordView.swift in Sources */,
 				64A027F32C5A80F6009FBD76 /* ViewExtension.swift in Sources */,
 			);
