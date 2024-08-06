@@ -13,7 +13,7 @@ protocol APIClient {
 }
 
 
-enum APIError: Error {
+enum APIError: Error, Equatable {
     case noInternetConnection
     case invalidResponse
     case clientError(message: String)

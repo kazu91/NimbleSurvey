@@ -123,4 +123,3 @@ struct SurveyMetaData: Codable {
         case records
     }
 }
-

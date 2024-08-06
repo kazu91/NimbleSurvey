@@ -24,6 +24,8 @@ class UserViewModel: ObservableObject {
         // tasks.forEach({ $0.cancel() })
     }
     
+    
+    // MARK: - Functions
     @MainActor
     func getUserInfo(triesNumber: Int = 0) async {
         // refresh token could be expired

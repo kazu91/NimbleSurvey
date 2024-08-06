@@ -7,6 +7,13 @@
 
 import Testing
 @testable import NimbleSurvey
+import Foundation
+
+class BundleClass {
+    var bundle: Bundle {
+        return Bundle(for: type(of: self))
+    }
+}
 
 struct NimbleSurveyTests {
 

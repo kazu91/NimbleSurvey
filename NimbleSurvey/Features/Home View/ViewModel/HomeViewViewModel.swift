@@ -14,8 +14,10 @@ class HomeViewViewModel: ObservableObject {
     @Published var currentPageIndex = 1
     @Published var networkMonitor: NetworkMonitor
     
-    var modelContext: ModelContext
-    private let surveyService: SurveyService
+    var modelContext: ModelContext?
+    //let surveyService: SurveyService<URLSessionAPIClient<SurveyEndpoint>>
+    
+    let surveyService: SurveyServiceProtocol
     
     @Published var isFirstTimeLoading: Bool = true
     @Published var isLoading: Bool = false
@@ -50,8 +52,11 @@ class HomeViewViewModel: ObservableObject {
     var errorMessage: String = ""
     
     //MARK: - Initialize
-    init(networkMonitor: NetworkMonitor, modelContent: ModelContext) {
-        self.surveyService = SurveyService()
+    init(networkMonitor: NetworkMonitor,
+         modelContent: ModelContext?,
+         surveyService: SurveyServiceProtocol = SurveyService(apiClient: URLSessionAPIClient<SurveyEndpoint>())
+    ) {
+        self.surveyService = surveyService
         self.networkMonitor = networkMonitor
         self.modelContext = modelContent
     }
@@ -91,6 +96,8 @@ class HomeViewViewModel: ObservableObject {
                 errorMessage = "Please try again later!"
             case APIError.clientError(let message):
                 errorMessage = message
+            case APIError.noInternetConnection:
+                errorMessage = "No Internet Connection"
             default: break
             }
             isShowingError = true
@@ -127,6 +134,9 @@ class HomeViewViewModel: ObservableObject {
     //    }
     
     func addNewSurveys(surveys: [SurveyData]) {
+        guard let modelContext = modelContext else {
+            return
+        }
         for survey in surveys {
             modelContext.insert(survey)
         }
@@ -134,6 +144,9 @@ class HomeViewViewModel: ObservableObject {
     
     @MainActor
     func fetchSurveys() {
+        guard let modelContext = modelContext else {
+            return
+        }
         do {
             let descriptor = FetchDescriptor<SurveyData>(sortBy: [SortDescriptor(\.attributes.createdAt)])
             surveys = try modelContext.fetch(descriptor)
@@ -144,7 +157,7 @@ class HomeViewViewModel: ObservableObject {
     
     func removeAllSurveyFromLocal() {
         do {
-            try modelContext.delete(model: SurveyData.self)
+            try modelContext?.delete(model: SurveyData.self)
         } catch {
             print("Failed to delete all surveys.")
         }

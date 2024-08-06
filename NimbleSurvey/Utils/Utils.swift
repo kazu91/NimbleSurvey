@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftUI
-
+import KeychainSwift
 // MARK: - Constant
 enum Constant {
     struct FontName {
@@ -112,5 +112,28 @@ extension Double {
         } else {
             return nil
         }
+    }
+}
+
+final class KeychainManager {
+    static let sharedInstance = KeychainManager()
+    
+    private let keychain: KeychainSwift
+    
+    init() {
+        keychain = KeychainSwift()
+        keychain.synchronizable = true
+    }
+    
+    func set(_ value: String, forKey key: String) {
+        keychain.set(value, forKey: key)
+    }
+    
+    func get(_ key: String) -> String? {
+        return keychain.get(key)
+    }
+    
+    func remove(_ key: String) {
+        keychain.delete(key)
     }
 }
