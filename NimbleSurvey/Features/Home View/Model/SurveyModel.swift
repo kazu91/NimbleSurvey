@@ -8,7 +8,7 @@
 import SwiftData
 
 // MARK: - Survey
-@Model class SurveyListModel: Codable {
+class SurveyListModel: Codable {
     enum CodingKeys: CodingKey {
         case data, meta
     }
