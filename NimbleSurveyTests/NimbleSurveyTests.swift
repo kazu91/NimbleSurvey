@@ -5,7 +5,7 @@
 //  Created by Kazu on 31/7/24.
 //
 
-import Testing
+import XCTest
 @testable import NimbleSurvey
 import Foundation
 
@@ -17,7 +17,7 @@ class BundleClass {
 
 struct NimbleSurveyTests {
 
-    @Test func testExample() async throws {
+    func testExample() async throws {
         // Write your test here and use APIs like `#expect(...)` to check expected conditions.
     }
 
