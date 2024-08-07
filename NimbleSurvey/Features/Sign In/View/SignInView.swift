@@ -131,7 +131,7 @@ struct SignInView: View {
     }
     
     var passwordTextfield: some View {
-        SecureField("", text: $viewModel.password, prompt: Text("Password").foregroundColor(.white.opacity(0.5)))
+        SecureField("Password", text: $viewModel.password, prompt: Text("Password").foregroundColor(.white.opacity(0.5)))
             .privacySensitive()
             .modifier(TextFieldModifier(fontSize: 16,
                                         backgroundColor: .white.opacity(0.15),
