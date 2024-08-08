@@ -7,6 +7,9 @@
 
 import Foundation
 
+// I accidentally pushed all my code on *[Feature] Supporting multiple application environments*
+///https://github.com/kazu91/NimbleSurvey/issues/10
+// into main branch, i'll explain my approach in PR later
 enum AppEnvironment: String {
     case debugDevelopment = "Debug Development"
     case releaseDevelopment = "Release Development"
