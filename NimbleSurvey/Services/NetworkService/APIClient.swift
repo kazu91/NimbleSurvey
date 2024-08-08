@@ -21,11 +21,19 @@ enum APIError: Error, Equatable {
     case serverError
 }
 
+protocol URLSessionProtocol {
+    func data(for request: URLRequest) async throws -> (Data, URLResponse)
+}
+
+extension URLSession: URLSessionProtocol { }
+
 class URLSessionAPIClient<EndpointType: APIEndpoint>: APIClient {
+    private let urlSession: URLSessionProtocol
     private let urlCache: URLCache
     
-    init(urlCache: URLCache = .shared) {
+    init(urlCache: URLCache = .shared, urlSession: URLSessionProtocol = URLSession.shared) {
         self.urlCache = urlCache
+        self.urlSession = urlSession
     }
     
     func request<T: Decodable>(_ endpoint: EndpointType) async throws -> T  {
@@ -48,6 +56,9 @@ class URLSessionAPIClient<EndpointType: APIEndpoint>: APIClient {
                         } else {
                             throw APIError.accessTokenRevoked
                         }
+                    }
+                    if response.statusCode == 404 {
+                        throw APIError.clientError(message: "Invalid URL")
                     }
                     throw APIError.clientError(message: response.debugDescription)
                 case 500 ..< 600:
@@ -76,7 +87,8 @@ class URLSessionAPIClient<EndpointType: APIEndpoint>: APIClient {
         let url = endpoint.baseURL.appendingPathComponent(endpoint.path)
         var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
         
-        if endpoint.method == .get {
+        // missing the case dont have any params
+        if endpoint.method == .get && !(endpoint.parameters.isEmpty) {
             components?.queryItems = endpoint.parameters.map({ param in
                 URLQueryItem(name: param.key, value: "\(param.value)")
             })
@@ -110,7 +122,8 @@ class URLSessionAPIClient<EndpointType: APIEndpoint>: APIClient {
     
     private func refreshToken() async throws {
         let request = try createRequest(for: UserEndpoint.refeshToken)
-        let (data, response) = try await URLSession.shared.data(for: request)
+
+        let (data, response) = try await urlSession.data(for: request)
         
         guard let httpResponse = response as? HTTPURLResponse else {
             throw APIError.serverError

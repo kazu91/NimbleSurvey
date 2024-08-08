@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		646F52272C63B7C000D24EF7 /* MockResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 646F52262C63B7C000D24EF7 /* MockResponseModel.swift */; };
+		646F52292C63B7DD00D24EF7 /* APIClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 646F52282C63B7DD00D24EF7 /* APIClientTests.swift */; };
 		64A027B72C59E96B009FBD76 /* NimbleSurveyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A027B62C59E96B009FBD76 /* NimbleSurveyApp.swift */; };
 		64A027BD2C59E96E009FBD76 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 64A027BC2C59E96E009FBD76 /* Assets.xcassets */; };
 		64A027C02C59E96E009FBD76 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 64A027BF2C59E96E009FBD76 /* Preview Assets.xcassets */; };
@@ -73,6 +75,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		646F52262C63B7C000D24EF7 /* MockResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockResponseModel.swift; sourceTree = "<group>"; };
+		646F52282C63B7DD00D24EF7 /* APIClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClientTests.swift; sourceTree = "<group>"; };
 		64A027B32C59E96B009FBD76 /* NimbleSurvey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NimbleSurvey.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		64A027B62C59E96B009FBD76 /* NimbleSurveyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleSurveyApp.swift; sourceTree = "<group>"; };
 		64A027BC2C59E96E009FBD76 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -142,6 +146,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		646F52242C63B76A00D24EF7 /* NetworkLayer */ = {
+			isa = PBXGroup;
+			children = (
+				646F52262C63B7C000D24EF7 /* MockResponseModel.swift */,
+				646F52282C63B7DD00D24EF7 /* APIClientTests.swift */,
+			);
+			path = NetworkLayer;
+			sourceTree = "<group>";
+		};
+		646F52252C63B77400D24EF7 /* HomeViewSurvey */ = {
+			isa = PBXGroup;
+			children = (
+				64A9EE052C6185B100A1FC02 /* MockUserService.swift */,
+				64A9EE0D2C6236A900A1FC02 /* HomeViewViewModelTests.swift */,
+			);
+			path = HomeViewSurvey;
+			sourceTree = "<group>";
+		};
 		64A027AA2C59E96B009FBD76 = {
 			isa = PBXGroup;
 			children = (
@@ -189,9 +211,9 @@
 			isa = PBXGroup;
 			children = (
 				64A9EE102C623FCC00A1FC02 /* survey_json.json */,
+				646F52252C63B77400D24EF7 /* HomeViewSurvey */,
+				646F52242C63B76A00D24EF7 /* NetworkLayer */,
 				64A027C92C59E96E009FBD76 /* NimbleSurveyTests.swift */,
-				64A9EE052C6185B100A1FC02 /* MockUserService.swift */,
-				64A9EE0D2C6236A900A1FC02 /* HomeViewViewModelTests.swift */,
 			);
 			path = NimbleSurveyTests;
 			sourceTree = "<group>";
@@ -590,11 +612,13 @@
 				64A9EE182C62569400A1FC02 /* HomeViewViewModel.swift in Sources */,
 				64A9EE142C624B0500A1FC02 /* APIEndpoint.swift in Sources */,
 				64A9EE062C6185B100A1FC02 /* MockUserService.swift in Sources */,
+				646F52272C63B7C000D24EF7 /* MockResponseModel.swift in Sources */,
 				64A027CA2C59E96E009FBD76 /* NimbleSurveyTests.swift in Sources */,
 				64A9EE152C624B0E00A1FC02 /* APIClient.swift in Sources */,
 				64A9EE172C624B5600A1FC02 /* Utils.swift in Sources */,
 				64A9EE132C624AFD00A1FC02 /* SurveyEndpoint.swift in Sources */,
 				64A9EE0C2C62336300A1FC02 /* SurveyModel.swift in Sources */,
+				646F52292C63B7DD00D24EF7 /* APIClientTests.swift in Sources */,
 				64A9EE0E2C6236A900A1FC02 /* HomeViewViewModelTests.swift in Sources */,
 				64A9EE0F2C623BAF00A1FC02 /* SurveyService.swift in Sources */,
 			);
