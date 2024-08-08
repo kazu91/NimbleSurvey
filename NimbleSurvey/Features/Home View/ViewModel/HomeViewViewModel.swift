@@ -23,7 +23,7 @@ class HomeViewViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var isShowingError: Bool = false
     @Published var page = 1
-    
+    @Published var needToSignIn = false
     var canLoadNextPage: Bool = false
     let pageSize = 10
     
@@ -94,13 +94,19 @@ class HomeViewViewModel: ObservableObject {
             switch error {
             case APIError.serverError:
                 errorMessage = "Please try again later!"
+                isShowingError = true
             case APIError.clientError(let message):
                 errorMessage = message
+                isShowingError = true
+            case APIError.accessTokenRevoked:
+                needToSignIn = true
+                errorMessage = "Need to sign in again"
             case APIError.noInternetConnection:
                 errorMessage = "No Internet Connection"
+                isShowingError = true
             default: break
             }
-            isShowingError = true
+           
             print(error.localizedDescription)
         }
     }
@@ -113,6 +119,8 @@ class HomeViewViewModel: ObservableObject {
         await getSurveyListFromServer()
         isLoading = false
     }
+    
+    
     
     //MARK: - Local storage
     
