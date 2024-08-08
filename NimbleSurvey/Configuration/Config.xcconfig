@@ -1,0 +1,15 @@
+//
+//  Config.xcconfig
+//  NimbleSurvey
+//
+//  Created by Kazu on 9/8/24.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+DEVELOPMENT_KEY = ofzl-2h5ympKa0WqqTzqlVJUiRsxmXQmt5tkgrlWnOE
+DEVELOPMENT_SECRET = lMQb900L-mTeU-FVTCwyhjsfBwRCxwwbCitPob96cuU
+
+PROD_KEY = ofzl-2h5ympKa0WqqTzqlVJUiRsxmXQmt5tkgrlWnOE
+PROD_SECRET = lMQb900L-mTeU-FVTCwyhjsfBwRCxwwbCitPob96cuU

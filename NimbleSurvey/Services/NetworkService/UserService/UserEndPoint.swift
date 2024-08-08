@@ -66,28 +66,28 @@ enum UserEndpoint: APIEndpoint {
             return [ "grant_type": "password",
                      "email": email,
                      "password": password,
-                     "client_id": Constant.SecretKey.key,
-                     "client_secret": Constant.SecretKey.secret
+                     "client_id": BuildConfiguration.shared.envID,
+                     "client_secret": BuildConfiguration.shared.envSecret
             ]
         case .getUserProfile:
             return [:]
         case .refeshToken:
             return["grant_type": "refresh_token",
                    "refresh_token": KeychainManager.sharedInstance.get(Constant.KeychainKey.refreshToken) ?? "",
-                   "client_id": Constant.SecretKey.key,
-                   "client_secret": Constant.SecretKey.secret
+                   "client_id": BuildConfiguration.shared.envID,
+                   "client_secret": BuildConfiguration.shared.envSecret
             ]
         case .logout:
             return ["token": (KeychainManager.sharedInstance.get(Constant.KeychainKey.accessToken) ?? ""),
-                    "client_id": Constant.SecretKey.key,
-                    "client_secret": Constant.SecretKey.secret
+                    "client_id": BuildConfiguration.shared.envID,
+                    "client_secret": BuildConfiguration.shared.envSecret
             ]
         case .forgotPassword(let email):
             return ["user": [
                     "email": email
             ],
-                    "client_id": Constant.SecretKey.key,
-                    "client_secret": Constant.SecretKey.secret
+                    "client_id": BuildConfiguration.shared.envID,
+                    "client_secret": BuildConfiguration.shared.envSecret
             ]
         }
     }

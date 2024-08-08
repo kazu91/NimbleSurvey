@@ -55,8 +55,6 @@ class SignInViewModel: ObservableObject {
                 
                 KeychainManager.sharedInstance.set(signInResponse.data.attributes.accessToken, forKey: Constant.KeychainKey.accessToken)
                 KeychainManager.sharedInstance.set(signInResponse.data.attributes.refreshToken, forKey: Constant.KeychainKey.refreshToken)
-                print(signInResponse.data.attributes.accessToken)
-                print(signInResponse.data.attributes.refreshToken)
                 password = ""
                 guard let modelContext = modelContext else {
                     return

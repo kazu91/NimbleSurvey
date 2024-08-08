@@ -14,10 +14,10 @@ enum Constant {
         static let Neuzeit = "NeuzeitSLTStd-Book"
     }
     
-    struct SecretKey {
-        static let key = "ofzl-2h5ympKa0WqqTzqlVJUiRsxmXQmt5tkgrlWnOE"
-        static let secret = "lMQb900L-mTeU-FVTCwyhjsfBwRCxwwbCitPob96cuU"
-    }
+//    struct SecretKey {
+//        static let key = //"ofzl-2h5ympKa0WqqTzqlVJUiRsxmXQmt5tkgrlWnOE"
+//        static let secret = "lMQb900L-mTeU-FVTCwyhjsfBwRCxwwbCitPob96cuU"
+//    }
     
     struct KeychainKey {
         static let accessToken = "surveyNimble_access_token"

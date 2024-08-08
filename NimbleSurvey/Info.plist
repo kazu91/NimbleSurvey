@@ -2,9 +2,19 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>PROD_SECRET</key>
+	<string>$(PROD_SECRET)</string>
+	<key>PROD_ID</key>
+	<string>$(PROD_KEY)</string>
+	<key>DEV_SECRET</key>
+	<string>$(DEVELOPMENT_SECRET)</string>
+	<key>DEV_ID</key>
+	<string>${DEVELOPMENT_KEY}</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Fonts/Neuzeit S LT Std Book.otf</string>
 	</array>
+	<key>Configuration</key>
+	<string>$(CONFIGURATION)</string>
 </dict>
 </plist>
