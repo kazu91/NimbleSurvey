@@ -91,6 +91,11 @@ class HomeViewViewModel: ObservableObject {
             addNewSurveys(surveys: model.data)
             
         } catch {
+            
+            if page > 1 {
+                page -= 1
+            }
+            
             switch error {
             case APIError.serverError:
                 errorMessage = "Please try again later!"
