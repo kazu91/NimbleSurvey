@@ -101,23 +101,14 @@ struct HomeView: View {
                 }
             }
         })
-//        .onChange(of: userViewModel.isShowingError, { _, newValue in
-//            if newValue {
-//                mainRouter.showBasicAlert(text: userViewModel.message)
-//                {
-//                    userViewModel.isShowingError = false
-//                }
-//            }
-//        })
         .onChange(of: homeViewModel.needToSignIn, { oldValue, newValue in
             if newValue {
                 mainRouter.showBasicAlert(text: homeViewModel.errorMessage)
                 {
-                    Task {
-                        await userViewModel.logout()
-                        homeViewModel.needToSignIn = false
-                        mainRouter.dismissScreen()
-                    }
+                    KeychainManager.sharedInstance.remove(Constant.KeychainKey.accessToken)
+                    KeychainManager.sharedInstance.remove(Constant.KeychainKey.refreshToken)
+                    homeViewModel.needToSignIn = false
+                    mainRouter.dismissScreen()
                 }
             }
         })
