@@ -101,11 +101,14 @@ struct HomeView: View {
                 }
             }
         })
-        .onChange(of: userViewModel.isShowingError, { _, newValue in
+        .onChange(of: homeViewModel.needToSignIn, { oldValue, newValue in
             if newValue {
-                mainRouter.showBasicAlert(text: userViewModel.message)
+                mainRouter.showBasicAlert(text: homeViewModel.errorMessage)
                 {
-                    userViewModel.isShowingError = false
+                    KeychainManager.sharedInstance.remove(Constant.KeychainKey.accessToken)
+                    KeychainManager.sharedInstance.remove(Constant.KeychainKey.refreshToken)
+                    homeViewModel.needToSignIn = false
+                    mainRouter.dismissScreen()
                 }
             }
         })

@@ -27,13 +27,7 @@ class UserViewModel: ObservableObject {
     
     // MARK: - Functions
     @MainActor
-    func getUserInfo(triesNumber: Int = 0) async {
-        // refresh token could be expired
-        if triesNumber > 1 {
-            isShowingError = true
-            message = "Please login again!"
-            return
-        }
+    func getUserInfo() async {
         
         do {
             let user: UserModel = try await userService.apiClient.request(.getUserProfile)
@@ -42,10 +36,8 @@ class UserViewModel: ObservableObject {
         } catch {
             switch error {
             case APIError.accessTokenRevoked:
-                if triesNumber == 0 {
-                    await refreshAccessToken()
-                    await getUserInfo(triesNumber: triesNumber + 1)
-                }
+                // need log out
+                break
             default:
                 message = error.localizedDescription
             }

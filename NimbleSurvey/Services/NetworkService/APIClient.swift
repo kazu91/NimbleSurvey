@@ -37,6 +37,53 @@ class URLSessionAPIClient<EndpointType: APIEndpoint>: APIClient {
     }
     
     func request<T: Decodable>(_ endpoint: EndpointType) async throws -> T  {
+        for attempt in 0..<2 {
+            do {
+                let request = try createRequest(for: endpoint)
+                
+                let (data, response) = try await URLSession.shared.data(for: request)
+                
+                guard let response = response as? HTTPURLResponse else {
+                    throw APIError.serverError
+                }
+                
+                switch response.statusCode {
+                case 400 ..< 500:
+                    if response.statusCode == 401 {
+                        if attempt == 0 {
+                            try await refreshToken()
+                            continue
+                        } else {
+                            throw APIError.accessTokenRevoked
+                        }
+                    }
+                    if response.statusCode == 404 {
+                        throw APIError.clientError(message: "Invalid URL")
+                    }
+                    throw APIError.clientError(message: response.debugDescription)
+                case 500 ..< 600:
+                    throw APIError.serverError
+                default: break
+                }
+                
+                let cachedResponse = CachedURLResponse(response: response, data: data)
+                
+                urlCache.storeCachedResponse(cachedResponse, for: request)
+                
+                
+                let decodedData = try JSONDecoder().decode(T.self, from: data)
+                
+                return decodedData
+            } catch {
+                if attempt == 1 { // If the second attempt fails, throw the error
+                    throw error
+                }
+            }
+        }
+        throw APIError.serverError
+    }
+    
+    private func createRequest(for endpoint: APIEndpoint) throws -> URLRequest {
         let url = endpoint.baseURL.appendingPathComponent(endpoint.path)
         var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
         
@@ -47,6 +94,7 @@ class URLSessionAPIClient<EndpointType: APIEndpoint>: APIClient {
             })
         }
         
+        
         guard let newUrl = components?.url else {
             throw APIError.clientError(message: "Invalid URL")
         }
@@ -55,7 +103,11 @@ class URLSessionAPIClient<EndpointType: APIEndpoint>: APIClient {
         request.httpMethod = endpoint.method.rawValue
         
         endpoint.headers?.forEach { request.addValue($0.value, forHTTPHeaderField: $0.key) }
-      
+        request.setValue(
+            "Bearer \(KeychainManager.sharedInstance.get(Constant.KeychainKey.accessToken) ?? "")",
+            forHTTPHeaderField: "Authorization"
+        )
+        
         if endpoint.method == .post || endpoint.method == .put {
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             do {
@@ -65,19 +117,22 @@ class URLSessionAPIClient<EndpointType: APIEndpoint>: APIClient {
             }
         }
         
+        return request
+    }
+    
+    private func refreshToken() async throws {
+        let request = try createRequest(for: UserEndpoint.refeshToken)
+
         let (data, response) = try await urlSession.data(for: request)
         
-        guard let response = response as? HTTPURLResponse else {
+        guard let httpResponse = response as? HTTPURLResponse else {
             throw APIError.serverError
         }
         
-        switch response.statusCode {
+        switch httpResponse.statusCode {
         case 400 ..< 500:
-            if response.statusCode == 401 {
+            if httpResponse.statusCode == 401 {
                 throw APIError.accessTokenRevoked
-            }
-            if response.statusCode == 404 {
-                throw APIError.clientError(message: "Invalid URL")
             }
             throw APIError.clientError(message: response.debugDescription)
         case 500 ..< 600:
@@ -85,12 +140,7 @@ class URLSessionAPIClient<EndpointType: APIEndpoint>: APIClient {
         default: break
         }
         
-        let cachedResponse = CachedURLResponse(response: response, data: data)
-        urlCache.storeCachedResponse(cachedResponse, for: URLRequest(url: url))
-        
-        
-        let decodedData = try JSONDecoder().decode(T.self, from: data)
-        
-        return decodedData
+        let signInResponse = try JSONDecoder().decode(SignInResponse.self, from: data)
+        KeychainManager.sharedInstance.set(signInResponse.data.attributes.accessToken, forKey: Constant.KeychainKey.accessToken)
     }
 }
